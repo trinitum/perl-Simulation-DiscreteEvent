@@ -76,7 +76,7 @@ my $server = $model->add('Test::DE::Server');
 is $server->model, $model, "Server's model is correct";
 
 # add customers generator to model
-my $generator = $model->add('Test::DE::Generator', rate => 1, dst => $server );
+my $generator = $model->add('Test::DE::Generator', rate => 1, dst => $server, limit => 10000 );
 is $generator->rate, 1, "Generator rate is 1";
 
 # generate first customer
@@ -86,9 +86,15 @@ is 0+@{$model->events}, 2, "Two events scheduled";
 # run simulation
 $model->run;
 
-is $server->served + $server->rejected, 1000, "Sum of customers is 1000";
+is $server->served + $server->rejected, 10000, "Sum of customers is 10000";
+ok $server->served < 5500, "About half of customers were served";
+ok $server->rejected < 5500, "About half of customers were rejected";
+ok $model->time > 7000, "Model time is greater than 7000";
+
+=pod
 
 print "Customers served: ", $server->served, "\n";
 print "Customers rejected: ", $server->rejected, "\n";
 print "Model time: ", $model->time, "\n";
 
+=cut

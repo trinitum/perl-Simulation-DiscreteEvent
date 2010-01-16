@@ -4,7 +4,7 @@ use Moose;
 use Module::Load;
 use Simulation::DiscreteEvent::Event;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 NAME
 
@@ -18,7 +18,7 @@ Simulation::DiscreteEvent - module for discrete-event simulation
 
 This module implements library for discrete-event simulation. Currently it is
 in experimental state, everything is subject to change. Please see example of
-using this library for modelling M/M/1/0 system in L<t/simulation-MM10.t>
+using this library for modelling M/M/1/0 system in t/simulation-MM10.t
 
 =head1 SUBROUTINES/METHODS
 
@@ -129,6 +129,9 @@ You can find documentation for this module with the perldoc command.
 
     perldoc Simulation::DiscreteEvent
 
+Project's git repository can be accessed at
+
+    http://github.com/trinitum/perl-Simulation-DiscreteEvent
 
 You can also look for information at:
 
@@ -151,9 +154,6 @@ L<http://cpanratings.perl.org/d/Simulation-DiscreteEvent>
 L<http://search.cpan.org/dist/Simulation-DiscreteEvent/>
 
 =back
-
-
-=head1 ACKNOWLEDGEMENTS
 
 
 =head1 LICENSE AND COPYRIGHT

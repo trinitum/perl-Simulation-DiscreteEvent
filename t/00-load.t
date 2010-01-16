@@ -6,7 +6,7 @@ BEGIN {
     plan tests => 3;
     for ( '', qw(::Server ::Event) ) {
         my $module = "Simulation::DiscreteEvent$_";
-        use_ok( $module, 0.01 ) || BAIL_OUT("Failed to load $module");
+        use_ok( $module, 0.02 ) || BAIL_OUT("Failed to load $module");
     }
 }
 
