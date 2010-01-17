@@ -9,11 +9,11 @@ use ok 'Simulation::DiscreteEvent::Server';
 my $invalid_object = {};
 
 {
-    package Test::Server;
+    package Test::DE::Server;
     use Moose;
     with 'Simulation::DiscreteEvent::Server';
     
-    sub type { 'Test Server' };
+    sub type { 'Test Server' }
     sub _dispatch {
         my $self = shift;
         my $event_type = shift;
@@ -29,11 +29,11 @@ my $invalid_object = {};
     sub stop { return $_[1] }
 }
 
-my $server = Test::Server->new( 
+my $server = Test::DE::Server->new( 
     name => 'Server1',
 );
 
-isa_ok $server, 'Test::Server', 'server is created';
+isa_ok $server, 'Test::DE::Server', 'server is created';
 is $server->type, 'Test Server', 'server type is correct';
 is $server->handle('start', undef), 'Started', 'start event is handled correctly';
 is $server->handle('stop', 'Stopped'), 'Stopped', 'stop event is handled correctly';

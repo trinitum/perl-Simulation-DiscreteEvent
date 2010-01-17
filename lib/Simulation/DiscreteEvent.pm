@@ -67,7 +67,7 @@ sub schedule {
 
 =head2 send($server, $event[, $message])
 
-Schedule I<$event> for I<$server> to be happened right now.
+Schedule I<$event> for I<$server> to happen right now.
 
 =cut
 sub send {
@@ -99,13 +99,33 @@ be no more events scheduled for execution.
 
 =cut
 sub run {
-    my $self = shift;
+    my $self      = shift;
     my $stop_time = shift;
-    while (my $event = shift @{$self->events}) {
-        last if $stop_time && $stop_time < $event->time;
+    my $counter;
+    while ( my $event = shift @{ $self->events } ) {
+        if ( $stop_time && $stop_time < $event->time ) {
+            unshift @{ $self->events }, $event;
+            last;
+        }
         $self->_time( $event->time );
-        $event->handle();
+        $event->handle;
+        $counter++;
     }
+    $counter;
+}
+
+=head2 step
+
+Hendles one event from the events queue.
+
+=cut
+sub step {
+    my $self  = shift;
+    my $event = shift @{ $self->events };
+    return unless $event;
+    $self->_time( $event->time );
+    $event->handle;
+    1;
 }
 
 1;
