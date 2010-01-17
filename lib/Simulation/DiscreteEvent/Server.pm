@@ -1,7 +1,12 @@
 package Simulation::DiscreteEvent::Server;
 
-use Moose::Role;
+use Moose;
 our $VERSION = '0.02';
+use Moose::Util::MetaRole;
+BEGIN {
+    extends 'MooseX::MethodAttributes::Inheritable';
+}
+use namespace::clean -except => ['meta'];
 
 =head1 NAME
 
@@ -11,10 +16,12 @@ Simulation::DiscreteEvent::Server - Moose role for implementing servers
 
     package MyServer;
     use Moose;
-    with 'Simulation::DiscreteEvent::Server';
-    sub _dispatch { { event => \&handler }->{$_[1]} };
-    sub handler {
-        # handle event here
+    use parent 'Simulation::DiscreteEvent::Server';
+    sub handler1 : Event(start) {
+        # handle start event here
+    }
+    sub handler2 : Event(stop) {
+        # handle stop event here
     }
     no Moose;
     __PACKAGE__->meta->make_immutable;
@@ -27,25 +34,16 @@ This is a Moose role that used to implement servers for L<Simulation::DiscreteEv
 
 =cut
 
-=head2 _dispatch($event)
-
-Subclasses are required to implement _dispatch. This method takes an event name
-as argument and should return reference to event handler, or undef. This is
-likely to be replaced in future versions with more convenient mechanism.
-
-=cut
-requires '_dispatch';
-
 has model => ( is => 'ro', isa => 'Simulation::DiscreteEvent' );
 
-=head2 name([$name])
+=head2 $self->name([$name])
 
 Allows you to get/set the name of the server
 
 =cut
 has name => ( is => 'rw', isa => 'Str' );
 
-=head2 handle($event, @args)
+=head2 $self->handle($event, @args)
 
 Invokes handler for I<$event> and passes I<@args> as arguments.
 
@@ -57,6 +55,32 @@ sub handle {
     die "Unknown event type" unless $handler;
     $handler->($self, @_);
 }
+
+my $_dispatch_table = {};
+
+sub _dispatch {
+    my $self = shift;
+    my $event = shift;
+    my $class = ref $self;
+    unless (defined $_dispatch_table->{$class}) {
+        _build_dispatch_table($class);
+    }
+    $_dispatch_table->{$class}{$event};
+}
+
+sub _build_dispatch_table {
+    my $class = shift;
+    $_dispatch_table->{$class} = {};
+    for ( $class->meta->get_all_methods_with_attributes ) {
+        my ($handles) = map { /^Event\((.+)\)$/; $1 } grep { /^Event\(.*\)$/ } @{ $_->attributes };
+        next unless $handles;
+        $_dispatch_table->{$class}{$handles} = $class->can( $_->name );
+    }
+    return;
+}
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 

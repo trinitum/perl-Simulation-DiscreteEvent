@@ -18,13 +18,12 @@ is $sim->time, 0, "simulation time is still zero";
 
 {
     package Test::DE::Server;
+    use parent 'Simulation::DiscreteEvent::Server';
     use Moose;
-    with 'Simulation::DiscreteEvent::Server';
 
     has evlog => ( is => 'rw', isa => 'ArrayRef', default => sub { [] } );
     sub type { 'Test Server' }
-    sub _dispatch { \&handler }
-    sub handler { push @{$_[0]->evlog}, $_[1] }
+    sub handler : Event(test) { push @{$_[0]->evlog}, $_[1] }
 }
 
 my $srv = $sim->add('Test::DE::Server');

@@ -1,5 +1,11 @@
 Revision history for Simulation-DiscreteEvent
 
+0.02    Mon Jan 18 2010 Pavel Shaydo <zwon@cpan.org>
+    * Now dispatch table is built automatically based on
+      methods attributes.
+    * Fixed POD problems
+    * Test suite improved
+
 0.01    Sat Jan 16 2010 Pavel Shaydo <zwon@cpan.org>
     * First version, released on an unsuspecting world.
 

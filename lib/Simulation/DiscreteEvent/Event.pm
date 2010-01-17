@@ -30,35 +30,35 @@ have no need to use it.
 
 subtype EventTime => as Num => where { $_ >= 0 } => message { "Time should be non-negative number" };
 
-=head2 time([$time])
+=head2 $self->time([$time])
 
 Get/set time of the event
 
 =cut
 has time => ( is => 'rw', isa => 'EventTime', required => 1 );
 
-=head2 server([$server])
+=head2 $self->server([$server])
 
 Get/set server that should handle this event
 
 =cut
-has server => ( is => 'rw', isa => role_type('Simulation::DiscreteEvent::Server'), required => 1 );
+has server => ( is => 'rw', isa => 'Simulation::DiscreteEvent::Server', required => 1 );
 
-=head2 type([$type])
+=head2 $self->type([$type])
 
 Get/set event type
 
 =cut
 has type => ( is => 'rw', isa => 'Str', required => 1 );
 
-=head2 message([$message])
+=head2 $self->message([$message])
 
 Get/set message that should be passed to server's event handler.
 
 =cut
 has message => ( is => 'rw' );
 
-=head2 handle
+=head2 $self->handle
 
 Invoke server's event handler and pass event type and message to it.
 

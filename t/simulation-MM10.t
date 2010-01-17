@@ -7,21 +7,14 @@ use ok 'Simulation::DiscreteEvent';
 
 {
     package Test::DE::Generator;
+    use parent 'Simulation::DiscreteEvent::Server';
     use Moose;
-    with 'Simulation::DiscreteEvent::Server';
 
     has rate => ( is => 'rw', isa => 'Num', default => 0.7 );
     has dst => ( is => 'rw', isa => 'Simulation::DiscreteEvent::Server' );
     has limit => ( is => 'rw', isa => 'Num', default => '1000' );
 
-    sub _dispatch {
-        my ( $self, $etype ) = @_;
-        {
-            next => \&next,
-        }->{$etype};
-    }
-
-    sub next {
+    sub next : Event(next) {
         my $self = shift;
         $self->model->send($self->dst, 'customer_new');
         my $limit = $self->limit - 1;
@@ -34,23 +27,15 @@ use ok 'Simulation::DiscreteEvent';
 
 {
     package Test::DE::Server;
+    use parent 'Simulation::DiscreteEvent::Server';
     use Moose;
-    with 'Simulation::DiscreteEvent::Server';
 
     has rate => ( is => 'rw', isa => 'Num', default => 1 );
     has served => ( is => 'rw', isa => 'Num', default => 0 );
     has rejected => ( is => 'rw', isa => 'Num', default => 0 );
     has busy => ( is => 'rw', isa => 'Bool' );
 
-    sub _dispatch {
-        my ( $self, $etype ) = @_;
-        {
-            customer_new => \&cust_new,
-            customer_served => \&cust_served,
-        }->{$etype};
-    }
-
-    sub cust_new {
+    sub cust_new : Event(customer_new) {
         my $self = shift;
         if($self->busy) {
             $self->rejected($self->rejected + 1);
@@ -62,7 +47,7 @@ use ok 'Simulation::DiscreteEvent';
         }
     }
 
-    sub cust_served {
+    sub cust_served : Event(customer_served) {
         my $self = shift;
         $self->served($self->served + 1);
         $self->busy(0);

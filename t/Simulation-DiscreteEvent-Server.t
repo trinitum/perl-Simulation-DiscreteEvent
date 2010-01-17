@@ -10,23 +10,16 @@ my $invalid_object = {};
 
 {
     package Test::DE::Server;
-    use Moose;
-    with 'Simulation::DiscreteEvent::Server';
-    
+    #use Moose;
+    #BEGIN { extends 'Simulation::DiscreteEvent::Server' };
+    use parent 'Simulation::DiscreteEvent::Server';
+ 
     sub type { 'Test Server' }
-    sub _dispatch {
-        my $self = shift;
-        my $event_type = shift;
-        if ($event_type eq 'start') {
-            return \&start;
-        }
-        if ($event_type eq 'stop') {
-            return \&stop;
-        }
-        return;
-    }
-    sub start { return 'Started' }
-    sub stop { return $_[1] }
+    sub start : Event(start) { return 'Started' }
+    sub finish : Hey : Event(stop) { return $_[1] }
+    sub junk : Junk(31) { 1 }
+    no Moose;
+    __PACKAGE__->meta->make_immutable;
 }
 
 my $server = Test::DE::Server->new( 

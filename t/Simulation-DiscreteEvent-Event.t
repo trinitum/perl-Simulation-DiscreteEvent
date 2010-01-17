@@ -8,11 +8,9 @@ use ok 'Simulation::DiscreteEvent::Event';
 
 {
     package Test::DE::Server;
-    use Moose;
-    with 'Simulation::DiscreteEvent::Server';
-    sub _dispatch { { test => \&test, test2 => \&test2 }->{$_[1]} };
-    sub test { ['test', @_ ] }
-    sub test2 { ['test2', @_ ] }
+    use parent 'Simulation::DiscreteEvent::Server';
+    sub test : Event(test) { ['test', @_ ] }
+    sub test2 : Event(test2) { ['test2', @_ ] }
 }
 my $server = Test::DE::Server->new();
 

@@ -33,7 +33,7 @@ sub BUILD {
     $self->_time(0);
 }
 
-=head2 time
+=head2 $self->time
 
 Returns current model time.
 
@@ -45,7 +45,7 @@ has servers => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
 
 has events => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
 
-=head2 schedule($time, $server, $event[, $message])
+=head2 $self->schedule($time, $server, $event[, $message])
 
 Schedule event at I<$time> for I<$server>. I<$event> is a string that
 defines event type. I<$message> is a message that will be passed to I<$server>'s
@@ -65,7 +65,7 @@ sub schedule {
     1;
 }
 
-=head2 send($server, $event[, $message])
+=head2 $self->send($server, $event[, $message])
 
 Schedule I<$event> for I<$server> to happen right now.
 
@@ -75,7 +75,7 @@ sub send {
     $self->schedule($self->time, @_);
 }
 
-=head2 add($server_class, %parameters)
+=head2 $self->add($server_class, %parameters)
 
 Will create new object of class I<$server_class> and add it to model.
 I<%parameters> are passed to the object constructor. Returns reference to the
@@ -91,7 +91,7 @@ sub add {
     return $srv;
 }
 
-=head2 run([$stop_time])
+=head2 $self->run([$stop_time])
 
 Start simulation. You should schedule at least one event before run simulation.
 Simulation will be finished at I<$stop_time> if specified, or when there will
@@ -114,7 +114,7 @@ sub run {
     $counter;
 }
 
-=head2 step
+=head2 $self->step
 
 Hendles one event from the events queue.
 
