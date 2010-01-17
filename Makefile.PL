@@ -9,6 +9,7 @@ build_requires 'Test::More' => 0.63;
 
 requires Moose => 0;
 requires 'Module::Load' => 0;
+requires 'MooseX::MethodAttributes' => 0.19;
 
 WriteAll;
 
