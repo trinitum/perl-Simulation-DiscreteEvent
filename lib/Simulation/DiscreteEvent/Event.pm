@@ -2,7 +2,8 @@ package Simulation::DiscreteEvent::Event;
 
 use Moose;
 use Moose::Util::TypeConstraints;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
+use namespace::clean -except => ['meta'];
 
 =head1 NAME
 
@@ -80,45 +81,9 @@ __END__
 
 Pavel Shaydo, C<< <zwon at cpan.org> >>
 
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-simulation-discreteevent at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Simulation-DiscreteEvent>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
 =head1 SUPPORT
 
-You can find documentation for this module with the perldoc command.
-
-    perldoc Simulation::DiscreteEvent
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Simulation-DiscreteEvent>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Simulation-DiscreteEvent>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Simulation-DiscreteEvent>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Simulation-DiscreteEvent/>
-
-=back
-
-
-=head1 ACKNOWLEDGEMENTS
-
+Please see documentation for L<Simulation::DiscreteEvent>
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -132,4 +97,3 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
-

@@ -3,8 +3,9 @@ package Simulation::DiscreteEvent;
 use Moose;
 use Module::Load;
 use Simulation::DiscreteEvent::Event;
+use namespace::clean -except => ['meta'];
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 NAME
 
