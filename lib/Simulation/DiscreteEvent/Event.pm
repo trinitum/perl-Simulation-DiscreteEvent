@@ -2,7 +2,7 @@ package Simulation::DiscreteEvent::Event;
 
 use Moose;
 use Moose::Util::TypeConstraints;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 use namespace::clean -except => ['meta'];
 
 =head1 NAME
@@ -25,7 +25,7 @@ Simulation::DiscreteEvent::Event - module for discrete-event simulation
 This module is used internally by L<Simulation::DiscreteEvent>. You generally
 have no need to use it.
 
-=head1 SUBROUTINES/METHODS
+=head1 METHODS
 
 =cut
 

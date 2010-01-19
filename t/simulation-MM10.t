@@ -7,8 +7,8 @@ use ok 'Simulation::DiscreteEvent';
 
 {
     package Test::DE::Generator;
-    use parent 'Simulation::DiscreteEvent::Server';
     use Moose;
+    use parent 'Simulation::DiscreteEvent::Server';
 
     has rate => ( is => 'rw', isa => 'Num', default => 0.7 );
     has dst => ( is => 'rw', isa => 'Simulation::DiscreteEvent::Server' );
@@ -27,8 +27,9 @@ use ok 'Simulation::DiscreteEvent';
 
 {
     package Test::DE::Server;
-    use parent 'Simulation::DiscreteEvent::Server';
     use Moose;
+    use parent 'Simulation::DiscreteEvent::Server';
+    with 'Simulation::DiscreteEvent::NumericState';
 
     has rate => ( is => 'rw', isa => 'Num', default => 1 );
     has served => ( is => 'rw', isa => 'Num', default => 0 );
@@ -37,11 +38,11 @@ use ok 'Simulation::DiscreteEvent';
 
     sub cust_new : Event(customer_new) {
         my $self = shift;
-        if($self->busy) {
+        if($self->state) {
             $self->rejected($self->rejected + 1);
         }
         else {
-            $self->busy(1);
+            $self->state(1);
             my $end_time = $self->model->time - log(rand) / $self->rate;
             $self->model->schedule($end_time, $self, 'customer_served');
         }
@@ -50,7 +51,7 @@ use ok 'Simulation::DiscreteEvent';
     sub cust_served : Event(customer_served) {
         my $self = shift;
         $self->served($self->served + 1);
-        $self->busy(0);
+        $self->state(0);
     }
 }
 
@@ -76,10 +77,17 @@ ok $server->served < 5500, "About half of customers were served";
 ok $server->rejected < 5500, "About half of customers were rejected";
 ok $model->time > 7000, "Model time is greater than 7000";
 
+my @state = $server->state_data;
+is_deeply $state[0], [0, 0], "First state record is [0, 0]";
+is 0+@state, 2 * $server->served + 1, "Correct number of state change records";
+ok $server->average_load > 0.45, "average load is about 50%";
+ok $server->average_load < 0.55, "average load is about 50%";
+
 =pod
 
 print "Customers served: ", $server->served, "\n";
 print "Customers rejected: ", $server->rejected, "\n";
+print "Server average load: $average_load\n";
 print "Model time: ", $model->time, "\n";
 
 =cut

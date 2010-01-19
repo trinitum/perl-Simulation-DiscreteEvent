@@ -13,5 +13,7 @@ requires 'Module::Load' => 0;
 requires 'MooseX::MethodAttributes' => 0.19;
 requires 'namespace::clean' => 0;
 
+auto_install();
+
 WriteAll;
 

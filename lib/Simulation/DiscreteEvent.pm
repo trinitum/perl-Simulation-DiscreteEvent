@@ -5,7 +5,7 @@ use Module::Load;
 use Simulation::DiscreteEvent::Event;
 use namespace::clean -except => ['meta'];
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 NAME
 
@@ -15,7 +15,7 @@ Simulation::DiscreteEvent - module for discrete-event simulation
 
     use Simulation::DiscreteEvent;
 
-=head1 Description
+=head1 DESCRIPTION
 
 This module implements library for discrete-event simulation. Currently it is
 in experimental state, everything is subject to change. Please see example of

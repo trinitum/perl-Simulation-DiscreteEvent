@@ -1,7 +1,7 @@
 package Simulation::DiscreteEvent::Server;
 
 use Moose;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 use Moose::Util::MetaRole;
 BEGIN {
     extends 'MooseX::MethodAttributes::Inheritable';
@@ -26,12 +26,12 @@ Simulation::DiscreteEvent::Server - Moose class for implementing servers
     no Moose;
     __PACKAGE__->meta->make_immutable;
 
-=head1 Description
+=head1 DESCRIPTION
 
 This is a base class for implementing servers for L<Simulation::DiscreteEvent>
 models.
 
-=head1 SUBROUTINES/METHODS
+=head1 METHODS
 
 =cut
 

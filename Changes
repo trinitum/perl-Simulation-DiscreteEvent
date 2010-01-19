@@ -1,5 +1,12 @@
 Revision history for Simulation-DiscreteEvent
 
+Tue Jan 19 2010 Pavel Shaydo <zwon@cpan.org>
+    * Added NumericState role
+
+0.03    Tue Jan 19 2010 Pavel Shaydo <zwon@cpan.org>
+    * fixed memory leak in Server
+    * fixed requirements
+
 0.02    Mon Jan 18 2010 Pavel Shaydo <zwon@cpan.org>
     * Now dispatch table is built automatically based on
       methods attributes.

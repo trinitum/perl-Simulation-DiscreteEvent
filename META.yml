@@ -5,6 +5,7 @@ author:
 build_requires:
   ExtUtils::MakeMaker: 6.42
   Test::More: 0.63
+  Test::use::ok: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
@@ -21,6 +22,8 @@ no_index:
 requires:
   Module::Load: 0
   Moose: 0
+  MooseX::MethodAttributes: 0.19
+  namespace::clean: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.03
