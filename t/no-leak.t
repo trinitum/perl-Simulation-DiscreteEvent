@@ -2,9 +2,11 @@ use strict;
 use warnings;
 
 use Test::More;
-eval "use Devel::Leak";
-plan skip_all => 'This test requires Devel::Leak' if $@;
+BEGIN {
+    eval "use Devel::Leak";
+    plan skip_all => 'This test requires Devel::Leak' if $@;
     plan 'no_plan';
+}
 
 use ok 'Simulation::DiscreteEvent';
 

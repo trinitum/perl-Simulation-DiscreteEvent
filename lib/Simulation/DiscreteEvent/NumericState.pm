@@ -37,7 +37,7 @@ during simulation:
 =head1 DESCRIPTION
 
 This role allows you to record statistic information about server state
-during modulation. It also provides simple functions to get some summary of
+during simulation. It also provides simple functions to get some summary of
 collected data.
 
 =head1 METHODS

@@ -32,14 +32,13 @@ use ok 'Simulation::DiscreteEvent';
     with 'Simulation::DiscreteEvent::NumericState';
 
     has rate => ( is => 'rw', isa => 'Num', default => 1 );
-    has served => ( is => 'rw', isa => 'Num', default => 0 );
-    has rejected => ( is => 'rw', isa => 'Num', default => 0 );
+    has dest => ( is => 'rw', isa => 'Simulation::DiscreteEvent::Server' );
     has busy => ( is => 'rw', isa => 'Bool' );
 
     sub cust_new : Event(customer_new) {
         my $self = shift;
         if($self->state) {
-            $self->rejected($self->rejected + 1);
+            $self->model->send($self->dest, 'customer_rejected');
         }
         else {
             $self->state(1);
@@ -50,9 +49,21 @@ use ok 'Simulation::DiscreteEvent';
 
     sub cust_served : Event(customer_served) {
         my $self = shift;
-        $self->served($self->served + 1);
+        $self->model->send($self->dest, 'customer_served');
         $self->state(0);
     }
+}
+
+{
+    package Test::DE::Sink;
+    use Moose;
+    use parent 'Simulation::DiscreteEvent::Server';
+    with 'Simulation::DiscreteEvent::Recorder';
+
+    sub served { shift->get_number_of('customer_served') }
+    sub rejected { shift->get_number_of('customer_rejected') }
+    sub cust_served : Event(customer_served) {}
+    sub cust_rejected : Event(customer_rejected) {}
 }
 
 my $model = Simulation::DiscreteEvent->new;
@@ -65,6 +76,10 @@ is $server->model, $model, "Server's model is correct";
 my $generator = $model->add('Test::DE::Generator', rate => 1, dst => $server, limit => 10000 );
 is $generator->rate, 1, "Generator rate is 1";
 
+# add sink to the model
+my $sink = $model->add('Test::DE::Sink');
+$server->dest($sink);
+
 # generate first customer
 $generator->next;
 is 0+@{$model->events}, 2, "Two events scheduled";
@@ -72,22 +87,16 @@ is 0+@{$model->events}, 2, "Two events scheduled";
 # run simulation
 $model->run;
 
-is $server->served + $server->rejected, 10000, "Sum of customers is 10000";
-ok $server->served < 5500, "About half of customers were served";
-ok $server->rejected < 5500, "About half of customers were rejected";
+is $sink->served + $sink->rejected, 10000, "Sum of customers is 10000";
+ok $sink->served < 5500, "About half of customers were served";
+ok $sink->rejected < 5500, "About half of customers were rejected";
 ok $model->time > 7000, "Model time is greater than 7000";
 
 my @state = $server->state_data;
 is_deeply $state[0], [0, 0], "First state record is [0, 0]";
-is 0+@state, 2 * $server->served + 1, "Correct number of state change records";
+is 0+@state, 2 * $sink->served + 1, "Correct number of state change records";
 ok $server->average_load > 0.45, "average load is about 50%";
 ok $server->average_load < 0.55, "average load is about 50%";
 
-=pod
 
-print "Customers served: ", $server->served, "\n";
-print "Customers rejected: ", $server->rejected, "\n";
-print "Server average load: $average_load\n";
-print "Model time: ", $model->time, "\n";
 
-=cut
