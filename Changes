@@ -1,7 +1,8 @@
 Revision history for Simulation-DiscreteEvent
 
-Tue Jan 19 2010 Pavel Shaydo <zwon@cpan.org>
+0.04    Thu Jan 21 2010 Pavel Shaydo <zwon@cpan.org>
     * Added NumericState role
+    * Added Recorder role
 
 0.03    Tue Jan 19 2010 Pavel Shaydo <zwon@cpan.org>
     * fixed memory leak in Server
