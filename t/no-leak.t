@@ -3,8 +3,8 @@ use warnings;
 
 use Test::More;
 BEGIN {
-    eval "use Devel::Leak";
-    plan skip_all => 'This test requires Devel::Leak' if $@;
+    eval "use Test::LeakTrace";
+    plan skip_all => 'This test requires Test::LeakTrace' if $@;
     plan 'no_plan';
 }
 
@@ -16,6 +16,8 @@ my $invalid_object = {};
     package Test::DE::Server;
     use Moose;
     BEGIN { extends 'Simulation::DiscreteEvent::Server' };
+    with 'Simulation::DiscreteEvent::NumericState';
+    with 'Simulation::DiscreteEvent::Recorder';
  
     sub type { 'Test Server' }
     sub start : Event(start) { return 'Started' }
@@ -23,17 +25,8 @@ my $invalid_object = {};
     __PACKAGE__->meta->make_immutable;
 }
 
-{
+no_leaks_ok {
     my $model = Simulation::DiscreteEvent->new;
     $model->add('Test::DE::Server');
-}
-my $handle;
-my $count;
-$count = Devel::Leak::NoteSV($handle);
-{
-    my $model = Simulation::DiscreteEvent->new;
-    $model->add('Test::DE::Server');
-}
-is Devel::Leak::CheckSV($handle) - $count, 0, "no leak";
-
+} 'no memory leaks';
 
