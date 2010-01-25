@@ -13,7 +13,7 @@ Add Simulation::DiscreteEvent::Recorder role to your server:
 
     package MyServer;
     use Moose;
-    use parent 'Simulation::DiscreteEvent::Server';
+    BEGIN { extends 'Simulation::DiscreteEvent::Server'; }
     with 'Simulation::DiscreteEvent::Recorder';
     sub handler1 : Event(start) {
         # handle start event here

@@ -10,9 +10,10 @@ my $invalid_object = {};
 
 {
     package Test::DE::Server;
-    #use Moose;
-    #BEGIN { extends 'Simulation::DiscreteEvent::Server' };
-    use parent 'Simulation::DiscreteEvent::Server';
+    use Moose;
+    BEGIN { 
+        extends 'Simulation::DiscreteEvent::Server' 
+    };
  
     sub type { 'Test Server' }
     sub start : Event(start) { return 'Started' }

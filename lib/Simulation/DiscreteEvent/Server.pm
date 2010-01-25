@@ -16,7 +16,9 @@ Simulation::DiscreteEvent::Server - Moose class for implementing servers
 
     package MyServer;
     use Moose;
-    use parent 'Simulation::DiscreteEvent::Server';
+    BEGIN {
+        extends 'Simulation::DiscreteEvent::Server';
+    }
     sub handler1 : Event(start) {
         # handle start event here
     }

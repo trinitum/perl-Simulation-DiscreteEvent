@@ -8,7 +8,9 @@ use ok 'Simulation::DiscreteEvent';
 {
     package Test::DE::Generator;
     use Moose;
-    use parent 'Simulation::DiscreteEvent::Server';
+    BEGIN {
+        extends 'Simulation::DiscreteEvent::Server';
+    }
 
     has rate => ( is => 'rw', isa => 'Num', default => 0.7 );
     has dst => ( is => 'rw', isa => 'Simulation::DiscreteEvent::Server' );
@@ -28,7 +30,9 @@ use ok 'Simulation::DiscreteEvent';
 {
     package Test::DE::Server;
     use Moose;
-    use parent 'Simulation::DiscreteEvent::Server';
+    BEGIN {
+        extends 'Simulation::DiscreteEvent::Server';
+    }
     with 'Simulation::DiscreteEvent::NumericState';
 
     has rate => ( is => 'rw', isa => 'Num', default => 1 );
@@ -57,7 +61,9 @@ use ok 'Simulation::DiscreteEvent';
 {
     package Test::DE::Sink;
     use Moose;
-    use parent 'Simulation::DiscreteEvent::Server';
+    BEGIN {
+        extends 'Simulation::DiscreteEvent::Server';
+    }
     with 'Simulation::DiscreteEvent::Recorder';
 
     sub served { shift->get_number_of('customer_served') }

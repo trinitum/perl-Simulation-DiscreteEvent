@@ -18,8 +18,10 @@ is $sim->time, 0, "simulation time is still zero";
 
 {
     package Test::DE::Server;
-    use parent 'Simulation::DiscreteEvent::Server';
     use Moose;
+    BEGIN {
+        extends 'Simulation::DiscreteEvent::Server';
+    }
 
     has evlog => ( is => 'rw', isa => 'ArrayRef', default => sub { [] } );
     sub type { 'Test Server' }

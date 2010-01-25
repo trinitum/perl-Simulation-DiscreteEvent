@@ -7,7 +7,9 @@ use Simulation::DiscreteEvent;
 {
     package Test::DE::Recorder;
     use Moose;
-    use parent 'Simulation::DiscreteEvent::Server';
+    BEGIN { 
+        extends 'Simulation::DiscreteEvent::Server';
+    }
     with 'Simulation::DiscreteEvent::Recorder';
     sub handler1 : Event(first)  { 1 }
     sub handler2 : Event(second) { 1 }

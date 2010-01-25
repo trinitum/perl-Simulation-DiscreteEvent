@@ -7,7 +7,6 @@ license  'perl';
 
 test_requires 'Test::More' => 0.63;
 test_requires 'Test::use::ok' => 0;
-test_requires parent => 0;
 
 requires Moose => 0;
 requires 'Module::Load' => 0;

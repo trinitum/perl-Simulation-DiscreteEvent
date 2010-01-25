@@ -8,7 +8,10 @@ use ok 'Simulation::DiscreteEvent::Event';
 
 {
     package Test::DE::Server;
-    use parent 'Simulation::DiscreteEvent::Server';
+    use Moose;
+    BEGIN {
+        extends 'Simulation::DiscreteEvent::Server';
+    }
     sub test : Event(test) { ['test', @_ ] }
     sub test2 : Event(test2) { ['test2', @_ ] }
 }
