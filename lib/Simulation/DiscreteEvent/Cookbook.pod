@@ -11,9 +11,12 @@ models, collecting and processing statistics about model behavior. This
 document provides some examples that should help you to start using
 Simulation::DiscreteEvent.
 
+I assume here that you familiar with basics of queueing theory and
+discrete-event simulation.
+
 =head1 RECIPES
 
-=head2 L<Modelling M/M/1/0 system|Simulation::DiscreteEvent::Cookbook::MM10>
+=head2 L<Modelling M/M/1/0 queue|Simulation::DiscreteEvent::Cookbook::MM10>
 
 =head1 AUTHOR
 
