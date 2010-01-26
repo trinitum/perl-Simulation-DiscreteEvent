@@ -1,7 +1,7 @@
 package Simulation::DiscreteEvent::CB::MM10;
 use Moose;
+use parent 'Simulation::DiscreteEvent::Server';
 use Math::Random qw(random_exponential);
-BEGIN { extends 'Simulation::DiscreteEvent::Server' }
 
 # server state
 has busy => ( is => 'rw', default => 0 );
@@ -54,3 +54,5 @@ sub finish : Event(finished) {
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+1;

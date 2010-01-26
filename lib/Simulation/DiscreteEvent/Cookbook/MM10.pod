@@ -2,6 +2,8 @@
 
 =head1 Modelling M/M/1/0 queue
 
+=head2 A bit of theory
+
 M/M/1/0 queue is usually first example in any book on queueing theory. Let's
 see how we can build the model of this system using
 L<Simulation::DiscreteEvent>.
@@ -27,11 +29,15 @@ handler we can schedule some additional events, so simulation may run
 endlessly. We can limit number of events that will be generated, or specify
 model time at which simulation should be stopped.
 
+=head2 Building a model
+
 The base class for model is L<Simulation::DiscreteEvent>. Instance of this
 class manages events' queue and invokes event handlers. Here's how we will use it:
 
     use Simulation::DiscreteEvent;
     my $model = Simulation::DiscreteEvent->new();
+
+=head2 Creating server class
 
 Now we should add server unit to the model. Server unit contains event
 handlers. Each server is inherited from L<Simulation::DiscreteEvent::Server>
@@ -119,6 +125,52 @@ changing server state to busy.
 
 Handler for 'finished' event is much simpler. We're just increasing number of
 served customers and chenging server state back to free.
+
+=head2 Completing model
+
+Now we have a class for server and can return to the model. In order to add
+server to model we're using the
+L<< add|Simulation::DiscreteEvent/"$self->add" >> method:
+
+    $server = $model->add(
+        "Simulation::DiscreteEvent::CB::MM10",
+        lambda => 2,
+        mu     => 3,
+    );
+
+This will create new instance of Simulation::DiscreteEvent::CB::MM10 with
+lambda and mu passed to constructor.
+
+We almost ready to run. Just one detail: before we start simulation we should
+schedule at least one event. Without it simulation will be finished
+immediately. We could use C<< schedule >> method, which we used in server code,
+but instead let's try another method -- L<< send|Simulation::DiscreteEvent/"$self->send" >>.
+This method schedules event for current time. As we not yet started simulation 
+the current model time is 0.
+
+    $model->send($server, "arrival");
+
+So after we start simulation, server will receive "arrival" event, will start
+serving customer, and schedule next "arrival" and "served" events. In order to 
+start simulation we're using L<< run|Simulation::DiscreteEvent/"$self->run" >>
+method.
+
+    $model->run(1000);
+
+Simulation running while there are events scheduled, and while model time is less
+than value passed to run method. In our case simulation will be stopped at model 
+time 1000.
+
+And after simulation finished we print numbers of served and rejected
+customers, and loss probability:
+
+    print "Served customers:    ", $server->served, "\n";
+    print "Rejected customers:  ", $server->rejected, "\n";
+    print "Customers loss rate: ", 
+        $server->rejected/($server->served + $server->rejected), "\n";
+
+And here's the whole script:
+
 
 
 =head1 AUTHOR
