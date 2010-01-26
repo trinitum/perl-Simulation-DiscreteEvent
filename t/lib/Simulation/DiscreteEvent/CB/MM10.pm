@@ -38,7 +38,7 @@ sub arrival : Event(arrival) {
         $self->inc_rejected;
     }
     else {
-        $srv_time = $self->model->time
+        my $srv_time = $self->model->time
             + random_exponential( 1, $self->mu );
         $self->model->schedule( $srv_time, $self, 'finished' );
         $self->busy(1);

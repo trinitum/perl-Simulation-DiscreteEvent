@@ -12,7 +12,7 @@ In M/M/1/0 system customers arrive in random moments of time independently of
 each over. The interval between moments of arrival is a random variable
 distributed exponentially, i.e. its density function is
 I<< f(t)=lambda*exp(-lambda*t), t>0 >>. The I<lambda> parameter is arrival rate
--- the average number of customers arriving in a unit of time. There's a
+- the average number of customers arriving in a unit of time. There's a
 single server in the system which serves customers. The time required to serve
 a customer is exponentially distributed random variable. The density function is 
 I<< f(t)=mu*exp(-mu*t), t>0 >>. The I<mu> parameter determines the average number
@@ -85,7 +85,7 @@ each handler on which event it should be invoked. Here's the server class:
             $self->inc_rejected;
         }
         else {
-            $srv_time = $self->model->time
+            my $srv_time = $self->model->time
                 + random_exponential( 1, $self->mu );
             $self->model->schedule( $srv_time, $self, 'finished' );
             $self->busy(1);
@@ -102,26 +102,25 @@ each handler on which event it should be invoked. Here's the server class:
     no Moose;
     __PACKAGE__->meta->make_immutable;
 
-As you can see we're using L<Moose>, if you don't know what Moose is you should
-read L<Moose::Manual>. We're defining several attributes and two event
+As you can see we're using L<Moose>, if you don't know what Moose is, you
+should read L<Moose::Manual>. We're defining several attributes and two event
 handlers. Each event handler is marked with C<Event> method attribute, e.g.
 finish method has C<Event(finished)> attribute on it, that shows that event
 'finished' should be handled by finish method.
 
-Here are two types of events: 'arrival' -- that means that new customer has
+Here are two types of events: 'arrival' - that means that new customer has
 arrived, and 'finished' that means that server has finished to serve customer.
 Let's start from 'arrival' handler. First we're computing time when next
 customer will arrive, for that we're adding to current model time
 (C<< $self->model->time >>) random value with exponential distribution. After
-that we're scheduling event for the next customer.
-L<< Schedule|Simulation::DiscreteEvent/"$self->schedule" >> function accepts three
-arguments (fourth argument is optional): time of the event to schedule,
-reference to the server that should handle event, and type of the event. After
-scheduling event for the next customer we're returning to current and checking
-if server busy or not. If server already busy, then we rejecting arrived
-customer. If server is free, customer is started to be served. We're computing
-time when serving will be finished and scheduling that event. Also we're
-changing server state to busy.
+that we're scheduling event for the next customer.  B<Schedule> function
+accepts three arguments (fourth argument is optional): time of the event to
+schedule, reference to the server that should handle event, and type of the
+event. After scheduling event for the next customer we're returning to current
+and checking if server busy or not. If server already busy, then we rejecting
+arrived customer. If server is free, customer is served. We're computing time
+when serving will be finished and scheduling that event. Also we're changing
+server state to busy.
 
 Handler for 'finished' event is much simpler. We're just increasing number of
 served customers and chenging server state back to free.
@@ -129,8 +128,7 @@ served customers and chenging server state back to free.
 =head2 Completing model
 
 Now we have a class for server and can return to the model. In order to add
-server to model we're using the
-L<< add|Simulation::DiscreteEvent/"$self->add" >> method:
+server to model we're using the B<add> method:
 
     $server = $model->add(
         "Simulation::DiscreteEvent::CB::MM10",
@@ -142,22 +140,20 @@ This will create new instance of Simulation::DiscreteEvent::CB::MM10 with
 lambda and mu passed to constructor.
 
 We almost ready to run. Just one detail: before we start simulation we should
-schedule at least one event. Without it simulation will be finished
-immediately. We could use C<< schedule >> method, which we used in server code,
-but instead let's try another method -- L<< send|Simulation::DiscreteEvent/"$self->send" >>.
-This method schedules event for current time. As we not yet started simulation 
-the current model time is 0.
+schedule at least one event. Without it simulation will finish immediately. We
+could use B<schedule> method, which we used in server code, but instead let's
+try another method - B<send>.  This method schedules event for current time. As
+we not yet started simulation the current model time is 0.
 
     $model->send($server, "arrival");
 
 So after we start simulation, server will receive "arrival" event, will start
 serving customer, and schedule next "arrival" and "served" events. In order to 
-start simulation we're using L<< run|Simulation::DiscreteEvent/"$self->run" >>
-method.
+start simulation we're using B<run> method.
 
     $model->run(1000);
 
-Simulation running while there are events scheduled, and while model time is less
+Simulation runs while there are events scheduled, and while model time is less
 than value passed to run method. In our case simulation will be stopped at model 
 time 1000.
 
@@ -171,7 +167,25 @@ customers, and loss probability:
 
 And here's the whole script:
 
-
+    use strict;
+    use warnings;
+    use Simulation::DiscreteEvent;
+    use Simulation::DiscreteEvent::CB::MM10;
+    
+    my $model = Simulation::DiscreteEvent->new;
+    
+    my $server = $model->add(
+        "Simulation::DiscreteEvent::CB::MM10",
+        lambda => 2,
+        mu     => 3,
+    );
+    
+    $model->send( $server, "arrival" );
+    $model->run(1000);
+    
+    print "Served customers:    ", $server->served,   "\n";
+    print "Rejected customers:  ", $server->rejected, "\n";
+    print "Customers loss rate: ", $server->rejected / ( $server->served + $server->rejected ), "\n";
 
 =head1 AUTHOR
 

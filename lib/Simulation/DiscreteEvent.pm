@@ -106,6 +106,7 @@ sub run {
     while ( my $event = shift @{ $self->events } ) {
         if ( $stop_time && $stop_time < $event->time ) {
             unshift @{ $self->events }, $event;
+            $self->_time($stop_time);
             last;
         }
         $self->_time( $event->time );

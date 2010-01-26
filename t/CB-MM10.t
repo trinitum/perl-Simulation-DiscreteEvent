@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Simulation::DiscreteEvent;
+use Simulation::DiscreteEvent::CB::MM10;
 
 my $model = Simulation::DiscreteEvent->new;
 
@@ -21,3 +22,8 @@ $model->run(1000);
 print "Served customers:    ", $server->served,   "\n";
 print "Rejected customers:  ", $server->rejected, "\n";
 print "Customers loss rate: ", $server->rejected / ( $server->served + $server->rejected ), "\n";
+
+my $loss_rate = $server->rejected / ( $server->served + $server->rejected );
+
+ok abs($loss_rate - 0.6) < 0.05, 'Loss rate is correct';
+is $model->time, 1000, 'Model time is 1000';
