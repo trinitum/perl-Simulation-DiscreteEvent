@@ -24,5 +24,5 @@ print "Customers loss rate: ", $server->rejected / ( $server->served + $server->
 
 my $loss_rate = $server->rejected / ( $server->served + $server->rejected );
 
-ok abs($loss_rate - 0.6) < 0.05, 'Loss rate is correct';
+ok abs($loss_rate - 0.4) < 0.1, 'Loss rate is correct';
 is $model->time, 1000, 'Model time is 1000';

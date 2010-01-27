@@ -86,7 +86,10 @@ created object.
 sub add {
     my $self = shift;
     my $server_class = shift;
-    eval { load $server_class };
+    {
+        no strict 'refs';
+        load $server_class unless @{"${server_class}::ISA"};
+    }
     my $srv = $server_class->new( model => $self, @_ );
     push @{$self->servers}, $srv;
     return $srv;

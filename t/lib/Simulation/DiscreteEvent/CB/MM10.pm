@@ -32,14 +32,14 @@ has rejected => (
 sub arrival : Event(arrival) {
     my $self = shift;
     my $next_time = $self->model->time 
-        + random_exponential( 1, $self->lambda );
+        + random_exponential( 1, 1 / $self->lambda );
     $self->model->schedule( $next_time, $self, 'arrival' );
     if ( $self->busy ) {
         $self->inc_rejected;
     }
     else {
         my $srv_time = $self->model->time
-            + random_exponential( 1, $self->mu );
+            + random_exponential( 1, 1 / $self->mu );
         $self->model->schedule( $srv_time, $self, 'finished' );
         $self->busy(1);
     }
