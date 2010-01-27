@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 use Simulation::DiscreteEvent;
-use Simulation::DiscreteEvent::CB::MM10;
 
 my $model = Simulation::DiscreteEvent->new;
 

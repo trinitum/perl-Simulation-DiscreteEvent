@@ -1,7 +1,7 @@
 package Simulation::DiscreteEvent::Server;
 
 use Moose;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 use Moose::Util::MetaRole;
 BEGIN {
     extends 'MooseX::MethodAttributes::Inheritable';

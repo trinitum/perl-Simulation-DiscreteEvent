@@ -2,7 +2,7 @@ package Simulation::DiscreteEvent::Event;
 
 use Moose;
 use Moose::Util::TypeConstraints;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 use namespace::clean -except => ['meta'];
 
 =head1 NAME
