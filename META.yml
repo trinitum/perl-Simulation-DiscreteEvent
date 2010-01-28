@@ -4,6 +4,7 @@ author:
   - 'Pavel Shaydo <zwon@cpan.org>'
 build_requires:
   ExtUtils::MakeMaker: 6.42
+  Math::Random: 0
   Test::More: 0.63
   Test::use::ok: 0
 configure_requires:

@@ -1,8 +1,8 @@
 =pod
 
-=head1 Modelling M/M/1/0 queue
+=head1 MODELLING M/M/1/0 QUEUE
 
-=head2 A bit of theory
+=head2 A Bit of Theory
 
 M/M/1/0 queue is usually first example in any book on queueing theory. Let's
 see how we can build the model of this system using
@@ -18,7 +18,7 @@ a customer is exponentially distributed random variable. The density function is
 I<< f(t)=mu*exp(-mu*t), t>0 >>. The I<mu> parameter determines the average number
 of customers that can be served in a unit of time. If customer arrives while
 server is still busy with another customer, then new customer is turned away
-and leaves the system. Let's try to determine probability that ariived customer
+and leaves the system. Let's try to determine probability that arrived customer
 will be turned away.
 
 In discrete-event simulation we assume that system may change its state only in
@@ -29,7 +29,7 @@ handler we can schedule some additional events, so simulation may run
 endlessly. We can limit number of events that will be generated, or specify
 model time at which simulation should be stopped.
 
-=head2 Building a model
+=head2 Building a Model
 
 The base class for model is L<Simulation::DiscreteEvent>. Instance of this
 class manages events' queue and invokes event handlers. Here's how we will use it:
@@ -37,7 +37,7 @@ class manages events' queue and invokes event handlers. Here's how we will use i
     use Simulation::DiscreteEvent;
     my $model = Simulation::DiscreteEvent->new();
 
-=head2 Creating server class
+=head2 Creating Server Class
 
 Now we should add server unit to the model. Server unit contains event
 handlers. Each server is inherited from L<Simulation::DiscreteEvent::Server>
@@ -75,7 +75,7 @@ each handler on which event it should be invoked. Here's the server class:
         handles => { inc_rejected => 'inc' }
     );
 
-    # New customerr arrived
+    # New customer arrived
     sub arrival : Event(arrival) {
         my $self = shift;
         my $next_time = $self->model->time 
@@ -123,9 +123,9 @@ when serving will be finished and scheduling that event. Also we're changing
 server state to busy.
 
 Handler for 'finished' event is much simpler. We're just increasing number of
-served customers and chenging server state back to free.
+served customers and changing server state back to free.
 
-=head2 Completing model
+=head2 Completing Model
 
 Now we have a class for server and can return to the model. In order to add
 server to model we're using the B<add> method:
@@ -184,7 +184,18 @@ And here's the whole script:
     
     print "Served customers:    ", $server->served,   "\n";
     print "Rejected customers:  ", $server->rejected, "\n";
-    print "Customers loss rate: ", $server->rejected / ( $server->served + $server->rejected ), "\n";
+    print "Customers loss rate: ",
+        $server->rejected / ( $server->served + $server->rejected ), "\n";
+
+This will output something like that:
+
+    Served customers:    1221
+    Rejected customers:  820
+    Customers loss rate: 0.401763841254287
+
+So we can see that about 40% of customers will be lost, and in real life it
+probably means that we should increase throughput of the server, or add more
+servers.
 
 =head1 AUTHOR
 
