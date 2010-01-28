@@ -16,7 +16,9 @@ discrete-event simulation.
 
 =head1 RECIPES
 
-=head2 L<Modelling M/M/1/0 queue|Simulation::DiscreteEvent::Cookbook::MM10>
+=head2 L<Simulation::DiscreteEvent::Cookbook::MM10>
+
+This recipe contains description of using library for modelling M/M/1/0 queue.
 
 =head1 AUTHOR
 

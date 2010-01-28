@@ -18,8 +18,9 @@ Simulation::DiscreteEvent - module for discrete-event simulation
 =head1 DESCRIPTION
 
 This module implements library for discrete-event simulation. Currently it is
-in experimental state, everything is subject to change. Please see example of
-using this library for modelling M/M/1/0 system in t/simulation-MM10.t
+in experimental state, everything is subject to change. Please see examples of
+using this library in L<Simulation::DiscreteEvent::Cookbook> and in test
+t/simulation-MM10.t
 
 =head1 SUBROUTINES/METHODS
 
