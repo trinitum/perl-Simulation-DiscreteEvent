@@ -1,5 +1,11 @@
 Revision history for Simulation-DiscreteEvent
 
+0.05    Fri Jan 29 2010 Pavel Shaydo <zwon@cpan.org>
+    * Started Cookbook. Wrote Cookbook/MM10.pod with example.
+    * Fixed code for loading server modules in DiscreteEvent.pm
+    * Removed parent from test requirements
+    * Switched to Test::LeakTrace in no-leak.t
+
 0.04    Thu Jan 21 2010 Pavel Shaydo <zwon@cpan.org>
     * Added NumericState role
     * Added Recorder role
