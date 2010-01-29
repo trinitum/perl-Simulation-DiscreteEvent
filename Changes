@@ -1,5 +1,9 @@
 Revision history for Simulation-DiscreteEvent
 
+0.06    Fri Jan 29 2010 Pavel Shaydo <zwon@cpan.org>
+    * Minor fix in MM10.pod
+    * Minor fix in MM10.pm
+
 0.05    Fri Jan 29 2010 Pavel Shaydo <zwon@cpan.org>
     * Started Cookbook. Wrote Cookbook/MM10.pod with example.
     * Fixed code for loading server modules in DiscreteEvent.pm

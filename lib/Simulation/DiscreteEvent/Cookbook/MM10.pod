@@ -1,5 +1,9 @@
 =pod
 
+=head1 NAME
+
+Simulation::DiscreteEvent::Cookbook::MM10 - Modelling M/M/1/0 queue
+
 =head1 MODELLING M/M/1/0 QUEUE
 
 =head2 A Bit of Theory

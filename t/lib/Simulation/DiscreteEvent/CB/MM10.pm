@@ -1,6 +1,6 @@
 package Simulation::DiscreteEvent::CB::MM10;
 use Moose;
-use parent 'Simulation::DiscreteEvent::Server';
+BEGIN { extends 'Simulation::DiscreteEvent::Server'; }
 use Math::Random qw(random_exponential);
 
 # server state
