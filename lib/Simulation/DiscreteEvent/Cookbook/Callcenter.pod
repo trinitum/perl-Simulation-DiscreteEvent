@@ -58,14 +58,14 @@ center. Here's the code:
     no Moose;
     __PACKAGE__->meta->make_immutable;
 
-Don't that looks like a pretty typical task? That's right, and there's
+Doesn't that look like a pretty typical task? That's right, and there's
 L<Simulation::DiscreteEvent::Generator> module for this.
 
 =head2 Call Center
 
 Call center serves incoming calls. When new call received we should check if
 there's free channel, increase number of busy channels, and schedule event when
-we finish serving this call. After call is served, or if it rejected because
+we finish serving this call. After call is served, or if it is rejected because
 all channels are busy, we're sending it to the sink object.
 
 In M/M/1/0 simulation we just counted numbers of served and rejected calls, but

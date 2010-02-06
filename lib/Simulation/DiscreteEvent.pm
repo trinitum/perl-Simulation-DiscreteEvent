@@ -5,7 +5,7 @@ use Module::Load;
 use Simulation::DiscreteEvent::Event;
 use namespace::clean -except => ['meta'];
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 =head1 NAME
 
@@ -18,9 +18,9 @@ Simulation::DiscreteEvent - module for discrete-event simulation
 =head1 DESCRIPTION
 
 This module implements library for discrete-event simulation. Currently it is
-in experimental state, everything is subject to change. Please see examples of
-using this library in L<Simulation::DiscreteEvent::Cookbook> and in test
-t/simulation-MM10.t
+beta quality, I do not plan any backward incompatible changes in interface,
+but everything may happen. Please see L<Simulation::DiscreteEvent::Cookbook>
+for information about using this module.
 
 =head1 SUBROUTINES/METHODS
 

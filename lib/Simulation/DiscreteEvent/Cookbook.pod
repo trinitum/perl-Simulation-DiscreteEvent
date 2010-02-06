@@ -20,6 +20,12 @@ discrete-event simulation.
 
 This recipe contains description of using library for modelling M/M/1/0 queue.
 
+=head2 L<Simulation::DiscreteEvent::Cookbook::Callcenter>
+
+This describes modelling of call center, and using
+L<Simulation::DiscreteEvent::NumericState> and
+L<Simulation::DiscreteEvent::Recorder> for collecting statistics.
+
 =head1 AUTHOR
 
 Pavel Shaydo, C<< <zwon at cpan.org> >>

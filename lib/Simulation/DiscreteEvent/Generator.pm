@@ -3,7 +3,7 @@ package Simulation::DiscreteEvent::Generator;
 use Moose;
 our $VERSION = '0.07';
 BEGIN { extends 'Simulation::DiscreteEvent::Server' }
-use Carp::Clan qw/^Simulation::DiscreteEvent/;
+use Carp;
 use namespace::clean -except => ['meta'];
 
 =head1 NAME

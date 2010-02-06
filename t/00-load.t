@@ -8,7 +8,7 @@ BEGIN {
         ::Generator) )
     {
         my $module = "Simulation::DiscreteEvent$_";
-        use_ok( $module, 0.06 ) || BAIL_OUT("Failed to load $module");
+        use_ok( $module, 0.07 ) || BAIL_OUT("Failed to load $module");
     }
 }
 
