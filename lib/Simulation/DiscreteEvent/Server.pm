@@ -3,9 +3,7 @@ package Simulation::DiscreteEvent::Server;
 use Moose;
 our $VERSION = '0.06';
 use Moose::Util::MetaRole;
-BEGIN {
-    extends 'MooseX::MethodAttributes::Inheritable';
-}
+BEGIN { extends 'MooseX::MethodAttributes::Inheritable' }
 use namespace::clean -except => ['meta'];
 
 =head1 NAME
@@ -19,10 +17,10 @@ Simulation::DiscreteEvent::Server - Moose class for implementing servers
     BEGIN {
         extends 'Simulation::DiscreteEvent::Server';
     }
-    sub handler1 : Event(start) {
+    sub start_handler : Event(start) {
         # handle start event here
     }
-    sub handler2 : Event(stop) {
+    sub stop : Event {
         # handle stop event here
     }
     no Moose;
@@ -31,7 +29,8 @@ Simulation::DiscreteEvent::Server - Moose class for implementing servers
 =head1 DESCRIPTION
 
 This is a base class for implementing servers for L<Simulation::DiscreteEvent>
-models.
+models. Please see description and examples of using this module in
+L<Simulation::DiscreteEvent::Cookbook>.
 
 =head1 METHODS
 
@@ -48,19 +47,20 @@ has name => ( is => 'rw', isa => 'Str' );
 
 =head2 $self->handle($event, @args)
 
-Invokes handler for I<$event> and passes I<@args> as arguments.
+Invoke handler for I<$event> and pass to it I<@args> as arguments.
 
 =cut
 sub handle {
     my $self = shift;
     my $event = shift;
     my $handler = $self->_dispatch($event);
-    die "Unknown event type" unless $handler;
+    die "Unknown event type `$event'" unless $handler;
     $handler->($self, @_);
 }
 
 my $_dispatch_table = {};
 
+# get method that handles specified event
 sub _dispatch {
     my $self = shift;
     my $event = shift;
@@ -71,13 +71,17 @@ sub _dispatch {
     $_dispatch_table->{$class}{$event};
 }
 
+# build dispatch table for the class
 sub _build_dispatch_table {
     my $class = shift;
     $_dispatch_table->{$class} = {};
-    for ( $class->meta->get_all_methods_with_attributes ) {
-        my ($handles) = map { /^Event\((.+)\)$/; $1 } grep { /^Event\(.*\)$/ } @{ $_->attributes };
+    for my $method ( $class->meta->get_all_methods_with_attributes ) {
+        my ($handles) = 
+            map { /^Event(?:\((.+)\))?$/; $1 || $method->name }
+            grep { /^Event(\(.*\))?$/ }
+            @{ $method->attributes };
         next unless $handles;
-        $_dispatch_table->{$class}{$handles} = $class->can( $_->name );
+        $_dispatch_table->{$class}{$handles} = $class->can( $method->name );
     }
     return;
 }
