@@ -29,7 +29,7 @@ has rejected => (
 );
 
 # New customerr arrived
-sub arrival : Event(arrival) {
+sub arrival : Event {
     my $self = shift;
     my $next_time = $self->model->time 
         + random_exponential( 1, 1 / $self->lambda );
