@@ -86,9 +86,11 @@ is $generator->rate, 1, "Generator rate is 1";
 my $sink = $model->add('Test::DE::Sink');
 $server->dest($sink);
 
+ok !defined($server->average_load), "Average load is undef when time is 0";
+
 # generate first customer
 $generator->next;
-is 0+@{$model->events}, 2, "Two events scheduled";
+is 0+@{$model->_events}, 2, "Two events scheduled";
 
 # run simulation
 $model->run;
@@ -103,6 +105,5 @@ is_deeply $state[0], [0, 0], "First state record is [0, 0]";
 is 0+@state, 2 * $sink->served + 1, "Correct number of state change records";
 ok $server->average_load > 0.45, "average load is about 50%";
 ok $server->average_load < 0.55, "average load is about 50%";
-
 
 

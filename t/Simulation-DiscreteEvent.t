@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More qw(no_plan);
+use Test::Most qw(no_plan);
 
 use ok 'Simulation::DiscreteEvent';
 
@@ -39,15 +39,17 @@ $sim->schedule(7, $srv, 'test', 'Event7');
 $sim->schedule(7, $srv, 'test', 'Event8');
 
 my @events = map { "Event$_" } 1..8;
-is_deeply [ map { $_->message } @{$sim->events} ], \@events, "Events scheduled in the rigth order";
+eq_or_diff [ map { $_->message } @{ $sim->_events } ], \@events, "Events scheduled in the rigth order";
 
 is $sim->run(2), 6, "6 events handled";
-is 0+@{$sim->events}, 2, "two events are still in the queue";
+dies_ok { $sim->schedule(1, $srv, 'test', 'Event9') } "Can't schedule events in the past";
+is 0+@{$sim->_events}, 2, "two events are still in the queue";
 is $sim->time, 2, "simulation stopped at time 2";
-is $sim->step, 1, "penultimate event handled successfully";
-is 0+@{$sim->events}, 1, "last event is in the queue";
-is $sim->step, 1, "last event handled successfully";
+ok $sim->step, "penultimate event handled successfully";
+is 0+@{$sim->_events}, 1, "last event is in the queue";
+ok $sim->step, "last event handled successfully";
 is $sim->time, 7, "after last step model time is 7";
-is_deeply $srv->evlog, \@events, "Events logged in the right order";
+eq_or_diff $srv->evlog, \@events, "Events logged in the right order";
+ok ! $sim->step, "no more events";
 
 

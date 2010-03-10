@@ -1,5 +1,11 @@
 Revision history for Simulation-DiscreteEvent
 
+Thu Mar 11 2010 Pavel Shaydo <zwon@cpan.org>
+    * Improved tests
+    * Minor fixes
+    * Added Test::Most to test requirements
+    * Updated Module::Install
+
 0.07    Sat Feb  6 2010 Pavel Shaydo <zwon@cpan.org>
     * Improved _build_dispatch_table. Now if event name is the same as
       handler subroutine name you can just specify :Event attribute

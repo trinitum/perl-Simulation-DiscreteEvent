@@ -43,9 +43,9 @@ Returns current model time.
 
 has time => ( reader => 'time', writer => '_time', isa => 'Num' );
 
-has servers => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
+has _servers => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
 
-has events => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
+has _events => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
 
 =head2 $self->schedule($time, $server, $event[, $message])
 
@@ -57,13 +57,18 @@ event handler.
 sub schedule {
     my ($self, $time, $server, $event_type, $message) = @_;
     die "Can't schedule event in the past" if $time < $self->time;
-    my $event = Simulation::DiscreteEvent::Event->new(time => $time, server => $server, type => $event_type, message => $message);
+    my $event = Simulation::DiscreteEvent::Event->new(
+        time    => $time,
+        server  => $server,
+        type    => $event_type,
+        message => $message
+    );
     my $i=0;
-    for (@{$self->events}) {
+    for (@{$self->_events}) {
         last if $_->time > $time;
         $i++;
     }
-    splice @{$self->events}, $i, 0, $event;
+    splice @{$self->_events}, $i, 0, $event;
     1;
 }
 
@@ -92,7 +97,7 @@ sub add {
         load $server_class unless @{"${server_class}::ISA"};
     }
     my $srv = $server_class->new( model => $self, @_ );
-    push @{$self->servers}, $srv;
+    push @{$self->_servers}, $srv;
     return $srv;
 }
 
@@ -107,9 +112,9 @@ sub run {
     my $self      = shift;
     my $stop_time = shift;
     my $counter;
-    while ( my $event = shift @{ $self->events } ) {
+    while ( my $event = shift @{ $self->_events } ) {
         if ( $stop_time && $stop_time < $event->time ) {
-            unshift @{ $self->events }, $event;
+            unshift @{ $self->_events }, $event;
             $self->_time($stop_time);
             last;
         }
@@ -122,12 +127,12 @@ sub run {
 
 =head2 $self->step
 
-Hendles one event from the events queue.
+Handles one event from the events queue.
 
 =cut
 sub step {
     my $self  = shift;
-    my $event = shift @{ $self->events };
+    my $event = shift @{ $self->_events };
     return unless $event;
     $self->_time( $event->time );
     $event->handle;
