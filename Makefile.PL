@@ -1,4 +1,5 @@
-use inc::Module::Install;
+use inc::Module::Install 0.97;
+use Module::Install::GithubMeta 0.10;
 
 name 'Simulation-DiscreteEvent';
 all_from 'lib/Simulation/DiscreteEvent.pm';
