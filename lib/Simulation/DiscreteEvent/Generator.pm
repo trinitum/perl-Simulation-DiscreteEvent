@@ -1,7 +1,7 @@
 package Simulation::DiscreteEvent::Generator;
 
 use Moose;
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 BEGIN { extends 'Simulation::DiscreteEvent::Server' }
 use Carp;
 use namespace::clean -except => ['meta'];
