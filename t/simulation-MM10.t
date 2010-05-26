@@ -46,7 +46,7 @@ use ok 'Simulation::DiscreteEvent';
         }
         else {
             $self->state(1);
-            my $end_time = $self->model->time - log(rand) / $self->rate;
+            my $end_time = $self->model->time - log(1 - rand) / $self->rate;
             $self->model->schedule($end_time, $self, 'customer_served');
         }
     }
