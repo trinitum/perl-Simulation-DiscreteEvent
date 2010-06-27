@@ -1,5 +1,8 @@
 Revision history for Simulation-DiscreteEvent
 
+0.09    Sun Jun 27 2010 Pavel Shaydo <zwon@cpan.org>
+    * Fixed another log(0) test failure
+
 0.08    Wed May 26 2010 Pavel Shaydo <zwon@cpan.org>
     * Fixed test failure if rand returns 0
 

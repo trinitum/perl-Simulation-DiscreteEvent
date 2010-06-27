@@ -22,7 +22,7 @@ use ok 'Simulation::DiscreteEvent';
         my $limit = $self->limit - 1;
         return unless $limit;
         $self->limit($limit);
-        my $next_time = $self->model->time - log(rand) / $self->rate;
+        my $next_time = $self->model->time - log(1 - rand) / $self->rate;
         $self->model->schedule($next_time, $self, 'next');
     }
 }
