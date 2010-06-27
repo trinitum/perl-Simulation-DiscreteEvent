@@ -1,7 +1,7 @@
 package Simulation::DiscreteEvent::Sink;
 
 use Moose;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 BEGIN { extends 'Simulation::DiscreteEvent::Server' }
 with 'Simulation::DiscreteEvent::Recorder';
 use namespace::clean -except => ['meta'];

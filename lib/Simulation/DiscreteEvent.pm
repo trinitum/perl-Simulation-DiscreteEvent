@@ -5,7 +5,7 @@ use Module::Load;
 use Simulation::DiscreteEvent::Event;
 use namespace::clean -except => ['meta'];
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 NAME
 

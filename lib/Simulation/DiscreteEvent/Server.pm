@@ -1,7 +1,7 @@
 package Simulation::DiscreteEvent::Server;
 
 use Moose;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 BEGIN { extends 'MooseX::MethodAttributes::Inheritable' }
 use namespace::clean -except => ['meta'];
 
